@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Modal } from "./common/Modal/Modal";
 import { ModalInfo } from "./components/ModalInfo";
 import { ModalProduct } from "./components/ModalProduct";
 import { Selection } from "./components/Selection";
 import { useStore } from "effector-react";
-import { $info, $products, $store } from "./store/effector";
+import { $info, $products, $store, getDayListOfProducts, getInfo, getProducts } from "./store/effector";
 import { ListOfProducts } from "./components/ListOfProducts";
 
 export const App: React.FC = () => {
@@ -16,6 +16,12 @@ export const App: React.FC = () => {
   const info = useStore($info);
   const products = useStore($products);
   const dayList = useStore($store);
+
+  useEffect(() => {
+    getInfo();
+    getProducts();
+    getDayListOfProducts();
+  }, [])
 
   return (
     <div>

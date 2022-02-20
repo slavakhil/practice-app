@@ -5,7 +5,7 @@ export interface IProduct {
 }
 
 export interface IDay {
-    dateId: number, //дата
+    dateId: number, 
     listOfProducts: IProduct[],
 
 }
