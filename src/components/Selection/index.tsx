@@ -6,13 +6,11 @@ import { addProductToListDay } from "../../store/effector";
 interface props {
   products: IProduct[];
   activeDay: number;
-  dayList: IDay[];
 }
 
 export const Selection: React.FC<props> = ({
   products,
   activeDay,
-  dayList,
 }) => {
   const {
     register,

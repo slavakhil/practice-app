@@ -2,11 +2,15 @@ import { IDay, IProduct, IPersonInfo } from "../models/types";
 import { createEffect, createEvent, createStore } from "effector";
 import localforage from "localforage";
 
+let now = new Date();
+
 // events
 export const addProduct = createEvent<IProduct>();
 export const addProductToListDay =
   createEvent<{ activeDay: number; newProductToList: IProduct }>();
+export const deleteProductListDay = createEvent<{ id: number }>();
 export const changeInfo = createEvent<IPersonInfo>();
+export const addDay = createEvent<IDay>();
 
 // effects
 export const getInfo = createEffect(
@@ -64,25 +68,63 @@ export const $products = createStore<IProduct[]>([
 
 export const $store = createStore<IDay[]>([
   {
-    dateId: 0,
+    dateId: 1,
+    listOfProducts: [
+      {
+        idProduct: 1,
+        name: "Молоко",
+        callories: 23,
+      },
+    ],
+  },
+  {
+    dateId: 6,
     listOfProducts: [],
   },
   {
-    dateId: 1,
+    dateId: 22,
+    listOfProducts: [],
+  },
+  {
+    dateId: 52,
     listOfProducts: [],
   },
 ])
-.on(getDayListOfProducts.doneData, (state, newState) =>
+  .on(getDayListOfProducts.doneData, (state, newState) =>
     newState !== null ? newState : state
   )
-.on(addProductToListDay, (state, { activeDay, newProductToList }) => {
-  const newState = state.map((list, i) => ({
-    ...list,
-    listOfProducts:
-      i === activeDay
-        ? [...list.listOfProducts, newProductToList]
-        : list.listOfProducts,
-  }));
-  localforage.setItem("daylist-of-products", newState);
-  return newState;
-});
+  .on(addDay, (state, { dateId, listOfProducts }) => {
+    const newState = [
+      ...state,
+      {
+        dateId: dateId,
+        listOfProducts: listOfProducts,
+      },
+    ];
+    console.log(state);
+    console.log(newState);
+    localforage.setItem("daylist-of-products", newState);
+    return newState;
+  })
+  .on(addProductToListDay, (state, { activeDay, newProductToList }) => {
+    const newState = state.map((list, i) => ({
+      ...list,
+      listOfProducts:
+        list.dateId === activeDay
+          ? [...list.listOfProducts, newProductToList]
+          : list.listOfProducts,
+    }));
+    localforage.setItem("daylist-of-products", newState);
+    return newState;
+  })
+  .on(deleteProductListDay, (state, {id}) => {
+    const newState = state.map((list, i) => ({
+      ...list,
+      listOfProducts:
+        list.dateId === now.getDate()
+          ? list.listOfProducts.filter((product) => product.idProduct !== id)
+          : list.listOfProducts,
+    }));
+    localforage.setItem("daylist-of-products", newState);
+    return newState;
+  })
