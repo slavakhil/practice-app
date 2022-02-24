@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { IDay, IProduct } from "../../models/types";
+import { IProduct } from "../../models/types";
 import { addProductToListDay } from "../../store/effector";
 
 interface props {
@@ -8,10 +8,7 @@ interface props {
   activeDay: number;
 }
 
-export const Selection: React.FC<props> = ({
-  products,
-  activeDay,
-}) => {
+export const Selection: React.FC<props> = ({ products, activeDay }) => {
   const {
     register,
     formState: { isValid },
@@ -32,9 +29,15 @@ export const Selection: React.FC<props> = ({
       <form onSubmit={onSubmit}>
         <label>Select product</label>
         <select {...register("options")}>
-          {products.map((product) => (
-            <option value={product.idProduct}>{product.name}</option>
-          ))}
+          {products
+            .sort((prev, next) => {
+              if (prev.name < next.name) return -1;
+              if (prev.name < next.name) return 1;
+              return 0;
+            })
+            .map((product) => (
+              <option key={product.idProduct} value={product.idProduct}>{product.name} {product.weight}гр.</option>
+            ))}
         </select>
 
         <input value="Add to list" type="submit" disabled={!isValid} />

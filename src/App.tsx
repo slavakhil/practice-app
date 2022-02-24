@@ -3,7 +3,6 @@ import "./App.css";
 import { Modal } from "./common/Modal/Modal";
 import { ModalInfo } from "./components/ModalInfo";
 import { ModalProduct } from "./components/ModalProduct";
-import { Selection } from "./components/Selection";
 import { useStore } from "effector-react";
 import {
   $info,
@@ -14,7 +13,7 @@ import {
   getInfo,
   getProducts,
 } from "./store/effector";
-import { List } from "./List";
+import { List } from "./components/ListOfProducts";
 
 export const App: React.FC = () => {
   const date = new Date();
@@ -22,7 +21,6 @@ export const App: React.FC = () => {
   const [modalActiveInfo, setModalActiveInfo] = useState(false);
   const [modalActiveProduct, setModalActiveProduct] = useState(false);
   const [activeDay, setActiveDay] = useState(date.getDate());
-  //const activeDay = date.getMinutes();
 
   const info = useStore($info);
   const products = useStore($products);
@@ -37,16 +35,16 @@ export const App: React.FC = () => {
   };
 
   const addNewDay = () => {
+    const getId = (date.getDate() + "" + (date.getMonth() + 1));
+    console.log(getId)
     setActiveDay(date.getDate());
-    if (isExist()) addDay({ dateId: activeDay, listOfProducts: [] });
+    if (isExist()) addDay({ dateId: activeDay, sums: {callories: 0, proteins: 0, fats: 0, carbohydrates: 0 }, listOfProducts: [] });
   };
 
   useEffect(() => {
-    //isExist()
     getInfo();
     getProducts();
     getDayListOfProducts();
-    //console.log(dayList)
   }, []);
 
   return (
@@ -65,7 +63,7 @@ export const App: React.FC = () => {
         <div className="info-block__data">
           {info && (
             <div>
-              Возраст: {info?.age}, вес: {info?.height}, рост: {info?.weight}
+              Пол: {info?.sex}, Возраст: {info?.age}, вес: {info?.height}, рост: {info?.weight}
             </div>
           )}
         </div>
@@ -76,20 +74,12 @@ export const App: React.FC = () => {
           Options
         </button>
       </div>
-      {
-        //<div className="selection-block">
-        //  <Selection products={products} activeDay={activeDay} />
-        //</div>
-      }
       <button
         className="add-product__button"
         onClick={() => setModalActiveProduct(true)}
       >
         Add product
       </button>
-      {
-        //<ListOfProducts dayList={dayList} activeDay={activeDay}/>
-      }
       <List products={products} activeDay={activeDay} dayList={dayList} />
     </div>
   );

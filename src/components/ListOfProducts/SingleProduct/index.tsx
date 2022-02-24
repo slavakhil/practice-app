@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Selection } from "./components/Selection";
-import { IDay, IProduct } from "./models/types";
-import { deleteProductListDay } from "./store/effector";
+import { Selection } from "../../Selection";
+import { IDay, IProduct } from "../../../models/types";
+import { deleteProductListDay } from "../../../store/effector";
 
 interface props {
   day: IDay;
@@ -9,13 +9,13 @@ interface props {
   products: IProduct[];
 }
 
-export const Single: React.FC<props> = ({ day, activeDay, products }) => {
+export const SingleProduct: React.FC<props> = ({ day, activeDay, products }) => {
   const [isOpen, setIsOpen] = useState(activeDay === day.dateId ? true : false);
   const [isToday, setIsToday] = useState(false);
 
   useEffect(() => {
     if (activeDay === day.dateId) setIsToday(true);
-  }, []);
+  }, [activeDay, day.dateId]);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -23,8 +23,8 @@ export const Single: React.FC<props> = ({ day, activeDay, products }) => {
 
   return (
     <div>
-      <div>
-        <div onClick={toggle}>{day.dateId}</div>
+      <div style={{border: "1px solid #000", width: "600px"}}>
+        <div onClick={toggle}>{day.dateId} callories: {day.sums.callories}, proteins: {day.sums.proteins}, fats: {day.sums.fats}, carbohydrates: {day.sums.carbohydrates}</div>
         {isOpen && (
           <div>
             {isToday && (
@@ -36,9 +36,9 @@ export const Single: React.FC<props> = ({ day, activeDay, products }) => {
               <div>There's no products</div>
             ) : (
               day.listOfProducts.map((product) => (
-                <div>
-                  {product.name + " " + product.callories}
-                  {isToday && <button onClick={() => deleteProductListDay({id: product.idProduct})}>x</button>}
+                <div key={product.id}>
+                  {product.productInDayList.name + " " + product.productInDayList.dataProduct.callories}
+                  {isToday && <button onClick={() => deleteProductListDay({id: product.id})}>x</button>}
                 </div>
               ))
             )}

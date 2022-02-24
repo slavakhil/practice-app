@@ -1,3 +1,4 @@
+import { IDataProduct, IList } from "./../models/types";
 import { IDay, IProduct, IPersonInfo } from "../models/types";
 import { createEffect, createEvent, createStore } from "effector";
 import localforage from "localforage";
@@ -5,7 +6,11 @@ import localforage from "localforage";
 let now = new Date();
 
 // events
-export const addProduct = createEvent<IProduct>();
+export const addProduct = createEvent<{
+  name: string;
+  weight: number;
+  dataProduct: IDataProduct;
+}>();
 export const addProductToListDay =
   createEvent<{ activeDay: number; newProductToList: IProduct }>();
 export const deleteProductListDay = createEvent<{ id: number }>();
@@ -25,6 +30,7 @@ export const getDayListOfProducts = createEffect(
 
 // stores
 export const $info = createStore<IPersonInfo>({
+  sex: 'male',
   weight: 0,
   height: 0,
   age: 0,
@@ -32,10 +38,11 @@ export const $info = createStore<IPersonInfo>({
   .on(getInfo.doneData, (state, newState) =>
     newState !== null ? newState : state
   )
-  .on(changeInfo, (state, { weight, height, age }) => {
-    localforage.setItem("info", { weight, height, age });
+  .on(changeInfo, (state, { sex, weight, height, age }) => {
+    localforage.setItem("info", { sex, weight, height, age });
     return {
       ...state,
+      sex: sex,
       weight: weight,
       height: height,
       age: age,
@@ -46,20 +53,33 @@ export const $products = createStore<IProduct[]>([
   {
     idProduct: 1,
     name: "Молоко",
-    callories: 23,
+    weight: 100,
+    dataProduct: {
+      callories: 64,
+      proteins: 20,
+      fats: 20,
+      carbohydrates: 30,
+    },
   },
 ])
   .on(getProducts.doneData, (state, newState) =>
     newState !== null ? newState : state
   )
-  .on(addProduct, (state, { name, callories }) => {
+  .on(addProduct, (state, { name, weight, dataProduct }) => {
+    console.log(typeof (dataProduct.callories - 0))
     const newState = [
       ...state,
       {
         idProduct:
           Math.max(0, Math.max(...state.map(({ idProduct }) => idProduct))) + 1,
         name,
-        callories,
+        weight: weight - 0,
+        dataProduct: {
+          callories: dataProduct.callories - 0,
+          proteins: dataProduct.proteins - 0,
+          fats: dataProduct.fats - 0,
+          carbohydrates: dataProduct.carbohydrates - 0,
+        },
       },
     ];
     localforage.setItem("products", newState);
@@ -68,26 +88,29 @@ export const $products = createStore<IProduct[]>([
 
 export const $store = createStore<IDay[]>([
   {
-    dateId: 1,
+    dateId: 19,
+    sums: {
+      callories: 64,
+      proteins: 20,
+      fats: 20,
+      carbohydrates: 30,
+    },
     listOfProducts: [
       {
-        idProduct: 1,
-        name: "Молоко",
-        callories: 23,
+        id: 1,
+        productInDayList: {
+          idProduct: 1,
+          name: "Молоко",
+          weight: 100,
+          dataProduct: {
+            callories: 64,
+            proteins: 20,
+            fats: 20,
+            carbohydrates: 30,
+          },
+        },
       },
     ],
-  },
-  {
-    dateId: 6,
-    listOfProducts: [],
-  },
-  {
-    dateId: 22,
-    listOfProducts: [],
-  },
-  {
-    dateId: 52,
-    listOfProducts: [],
   },
 ])
   .on(getDayListOfProducts.doneData, (state, newState) =>
@@ -98,6 +121,7 @@ export const $store = createStore<IDay[]>([
       ...state,
       {
         dateId: dateId,
+        sums: { callories: 0, proteins: 0, fats: 0, carbohydrates: 0 },
         listOfProducts: listOfProducts,
       },
     ];
@@ -107,24 +131,56 @@ export const $store = createStore<IDay[]>([
     return newState;
   })
   .on(addProductToListDay, (state, { activeDay, newProductToList }) => {
-    const newState = state.map((list, i) => ({
+    const newState = state.map((list) => ({
       ...list,
+      sums: list.dateId === activeDay ? {
+        callories: (list.sums.callories - 0) + (newProductToList.dataProduct.callories - 0),
+        proteins: (list.sums.proteins - 0) + (newProductToList.dataProduct.proteins - 0),
+        fats: (list.sums.fats - 0) + (newProductToList.dataProduct.fats - 0),
+        carbohydrates:
+          (list.sums.carbohydrates - 0) + (newProductToList.dataProduct.carbohydrates - 0),
+      } : list.sums,
       listOfProducts:
         list.dateId === activeDay
-          ? [...list.listOfProducts, newProductToList]
+          ? [
+              ...list.listOfProducts,
+              {
+                id:
+                  Math.max(
+                    0,
+                    Math.max(...list.listOfProducts.map(({ id }) => id))
+                  ) + 1,
+                productInDayList: newProductToList,
+              },
+            ]
           : list.listOfProducts,
     }));
     localforage.setItem("daylist-of-products", newState);
     return newState;
   })
-  .on(deleteProductListDay, (state, {id}) => {
-    const newState = state.map((list, i) => ({
+  .on(deleteProductListDay, (state, { id }) => {
+    const newState = state.map((list) => {
+      let dataDeletedProduct: IDataProduct = {
+        callories: 0,
+        proteins: 0,
+        fats: 0,
+        carbohydrates: 0
+      };
+      list.listOfProducts.map((product) => (product.id === id) ? (dataDeletedProduct = product.productInDayList.dataProduct) : product);
+      console.log(dataDeletedProduct);
+      return {
       ...list,
+      sums: list.dateId === now.getDate() ? {
+        callories: (list.sums.callories - 0) - dataDeletedProduct.callories,
+        proteins: (list.sums.proteins - 0) -  dataDeletedProduct.proteins,
+        fats: (list.sums.fats - 0) - dataDeletedProduct.fats,
+        carbohydrates: (list.sums.carbohydrates - 0) - dataDeletedProduct.carbohydrates
+      } : list.sums,
       listOfProducts:
         list.dateId === now.getDate()
-          ? list.listOfProducts.filter((product) => product.idProduct !== id)
+          ? list.listOfProducts.filter((product) => product.id !== id)
           : list.listOfProducts,
-    }));
+    }});
     localforage.setItem("daylist-of-products", newState);
     return newState;
-  })
+  });

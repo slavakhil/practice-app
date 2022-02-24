@@ -14,11 +14,11 @@ export const ModalProduct: React.FC = () => {
     mode: "onBlur"
   });
   
-  const onSubmit = handleSubmit(({ name, callories }) => {
+  const onSubmit = handleSubmit(({ name, weight, dataProduct }) => {
     addProduct({
-      idProduct: Date.now(),
       name,
-      callories
+      weight,
+      dataProduct
     })
   })
 
@@ -40,15 +40,55 @@ export const ModalProduct: React.FC = () => {
         </label>
         <div>{errors?.name && errors?.name?.message}</div>
         <label>
-          Callories
+          Weight
           <input type='number'
-            {...register('callories', {
+            {...register('weight', {
               required: 'Поле обязательно к заполнению',
-              min: 1
+              min: 0
             })}
           />
         </label>
-        <div>{errors?.callories && errors?.callories?.message}</div>
+        <div>{errors?.weight && errors?.weight.message}</div>
+        <label>
+          Callories
+          <input type='number'
+            {...register('dataProduct.callories', {
+              required: 'Поле обязательно к заполнению',
+              min: 0
+            })}
+          />
+        </label>
+        <div>{errors?.dataProduct?.callories && errors?.dataProduct.callories.message}</div>
+        <label>
+          Proteins
+          <input type='number' step='0.1'
+            {...register('dataProduct.proteins', {
+              required: 'Поле обязательно к заполнению',
+              min: 0
+            })}
+          />
+        </label>
+        <div>{errors?.dataProduct?.proteins && errors?.dataProduct.proteins.message}</div>
+        <label>
+          Fats
+          <input type='number' step='0.1'
+            {...register('dataProduct.fats', {
+              required: 'Поле обязательно к заполнению',
+              min: 0
+            })}
+          />
+        </label>
+        <div>{errors?.dataProduct?.fats && errors?.dataProduct.fats.message}</div>
+        <label>
+          Carbohydrates
+          <input type='number' step='0.1'
+            {...register('dataProduct.carbohydrates', {
+              required: 'Поле обязательно к заполнению',
+              min: 0
+            })}
+          />
+        </label>
+        <div>{errors?.dataProduct?.carbohydrates && errors?.dataProduct.carbohydrates.message}</div>
         <input value="Добавить" type="submit" disabled={!isValid} />
       </form>
     </div>
