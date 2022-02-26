@@ -18,7 +18,7 @@ import { List } from "./components/ListOfProducts";
 import { ModalStandart } from "./components/ModalStandart";
 
 export const App: React.FC = () => {
-  const date = new Date();
+
   const [modalActiveInfo, setModalActiveInfo] = useState(false);
   const [modalActiveProduct, setModalActiveProduct] = useState(false);
   const [modalActiveStandart, setModalActiveStandart] = useState(false);
