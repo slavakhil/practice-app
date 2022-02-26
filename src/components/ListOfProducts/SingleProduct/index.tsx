@@ -14,17 +14,21 @@ export const SingleProduct: React.FC<props> = ({ day, activeDay, products }) => 
   const [isToday, setIsToday] = useState(false);
 
   useEffect(() => {
-    if (activeDay === day.dateId) setIsToday(true);
+    activeDay === day.dateId && setIsToday(true);
   }, [activeDay, day.dateId]);
 
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggle = () => setIsOpen(!isOpen);
+
+  const getTextDate = () => ({
+    day: Math.floor(day.dateId / 1000000),
+    month: Math.floor((day.dateId % 1000000) / 10000),
+    year: day.dateId % 10000,
+  })
 
   return (
     <div>
-      <div style={{border: "1px solid #000", width: "600px"}}>
-        <div onClick={toggle}>{day.dateId} callories: {day.sums.callories}, proteins: {day.sums.proteins}, fats: {day.sums.fats}, carbohydrates: {day.sums.carbohydrates}</div>
+      <div className="single-product">
+        <div onClick={toggle}>{getTextDate().day + "." + getTextDate().month + "." + getTextDate().year} ккал: {day.sums.callories}, белки: {day.sums.proteins}, жиры: {day.sums.fats}, углеводы: {day.sums.carbohydrates}</div>
         {isOpen && (
           <div>
             {isToday && (
@@ -33,10 +37,10 @@ export const SingleProduct: React.FC<props> = ({ day, activeDay, products }) => 
               </div>
             )}
             {day.listOfProducts.length === 0 ? (
-              <div>There's no products</div>
+              <div className="single-product__element">There's no products</div>
             ) : (
               day.listOfProducts.map((product) => (
-                <div key={product.id}>
+                <div key={product.id} className="single-product__element">
                   {product.productInDayList.name + " " + product.productInDayList.dataProduct.callories}
                   {isToday && <button onClick={() => deleteProductListDay({id: product.id})}>x</button>}
                 </div>

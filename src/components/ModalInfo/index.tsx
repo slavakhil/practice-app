@@ -4,7 +4,9 @@ import { IPersonInfo } from "../../models/types";
 import "./ModalInfo.css";
 import { changeInfo } from "../../store/effector";
 
-export const ModalInfo: React.FC = () => {
+export const ModalInfo: React.FC<{ 
+  setActive: React.Dispatch<React.SetStateAction<boolean>>
+ }> = ({ setActive }) => {
   const {
     register,
     formState: { errors, isValid },
@@ -14,7 +16,8 @@ export const ModalInfo: React.FC = () => {
   });
 
   const onSubmit = handleSubmit(({ sex, weight, height, age }) => {
-    changeInfo({ sex: sex, weight, height, age });
+    changeInfo({ sex, weight, height, age });
+    setActive(false);
   });
 
   return (

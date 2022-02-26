@@ -10,35 +10,44 @@ import {
   $store,
   addDay,
   getDayListOfProducts,
+  getId,
   getInfo,
   getProducts,
 } from "./store/effector";
 import { List } from "./components/ListOfProducts";
+import { ModalStandart } from "./components/ModalStandart";
 
 export const App: React.FC = () => {
   const date = new Date();
-
   const [modalActiveInfo, setModalActiveInfo] = useState(false);
   const [modalActiveProduct, setModalActiveProduct] = useState(false);
-  const [activeDay, setActiveDay] = useState(date.getDate());
+  const [modalActiveStandart, setModalActiveStandart] = useState(false);
+  const [activeDay, setActiveDay] = useState(getId());
 
   const info = useStore($info);
   const products = useStore($products);
   const dayList = useStore($store);
 
   const isExist = () => {
-    var hello = true;
-    //dayList.map(day => day.dateId === activeDay ? (hello = false) : (console.log(day.dateId + " " + activeDay),hello = true));
-    dayList.map((day) => (day.dateId === activeDay ? (hello = false) : ""));
-    console.log(hello);
-    return hello;
+    var existId = true;
+    dayList.map((day) => (day.dateId === activeDay && (existId = false)));
+    return existId;
   };
 
   const addNewDay = () => {
-    const getId = (date.getDate() + "" + (date.getMonth() + 1));
-    console.log(getId)
-    setActiveDay(date.getDate());
-    if (isExist()) addDay({ dateId: activeDay, sums: {callories: 0, proteins: 0, fats: 0, carbohydrates: 0 }, listOfProducts: [] });
+    if (isExist()) {
+      addDay({
+          dateId: activeDay,
+          listOfProducts: [],
+          sums:
+          {
+            callories: 0,
+            proteins: 0,
+            fats: 0,
+            carbohydrates: 0
+          },
+        });
+    }
   };
 
   useEffect(() => {
@@ -48,39 +57,43 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <Modal active={modalActiveInfo} setActive={setModalActiveInfo}>
-        <ModalInfo />
+        <ModalInfo setActive={setModalActiveInfo} />
       </Modal>
-
       <Modal active={modalActiveProduct} setActive={setModalActiveProduct}>
-        <ModalProduct />
+        <ModalProduct setActive={setModalActiveProduct} />
+      </Modal>
+      <Modal active={modalActiveStandart} setActive={setModalActiveStandart}>
+        <ModalStandart setActive={setModalActiveStandart} info={info} />
       </Modal>
       <button onClick={addNewDay}>ADD</button>
 
-      <div className="list-days"></div>
-      <div className="info-block">
-        <div className="info-block__data">
-          {info && (
-            <div>
-              Пол: {info?.sex}, Возраст: {info?.age}, вес: {info?.height}, рост: {info?.weight}
-            </div>
-          )}
+      <div className="main-block">
+        <div className="info-block">
+          <div className="info-block__data">
+            {info && (
+              <div>
+                Пол: {info?.sex}, Возраст: {info?.age}, вес: {info?.weight}, рост: {info?.height}
+              </div>
+            )}
+          </div>
+          <button
+            className="set-info__button"
+            onClick={() => setModalActiveInfo(true)}
+          >
+            Options
+          </button>
+          <button onClick={() => setModalActiveStandart(true)}>Rec</button>
         </div>
         <button
-          className="set-info__button"
-          onClick={() => setModalActiveInfo(true)}
+          className="add-product__button"
+          onClick={() => setModalActiveProduct(true)}
         >
-          Options
+          Add product
         </button>
+        <List products={products} activeDay={activeDay} dayList={dayList} />
       </div>
-      <button
-        className="add-product__button"
-        onClick={() => setModalActiveProduct(true)}
-      >
-        Add product
-      </button>
-      <List products={products} activeDay={activeDay} dayList={dayList} />
     </div>
   );
 };

@@ -5,7 +5,9 @@ import './ModalProduct.css'
 import { addProduct } from "../../store/effector";
 
 
-export const ModalProduct: React.FC = () => {
+export const ModalProduct: React.FC<{ 
+  setActive: React.Dispatch<React.SetStateAction<boolean>>
+ }> = ({ setActive }) => {
   const {
     register,
     formState: { errors, isValid },
@@ -13,16 +15,17 @@ export const ModalProduct: React.FC = () => {
   } = useForm<IProduct>({
     mode: "onBlur"
   });
-  
+
   const onSubmit = handleSubmit(({ name, weight, dataProduct }) => {
     addProduct({
       name,
       weight,
       dataProduct
     })
+    setActive(false);
   })
 
-  return(
+  return (
     <div>
       <h1>Adding product</h1>
       <form onSubmit={onSubmit}>
