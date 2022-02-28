@@ -17,8 +17,10 @@ import {
 import { List } from "./components/ListOfProducts";
 import { ModalStandart } from "./components/ModalStandart";
 
-export const App: React.FC = () => {
+import update from "./assets/update.svg";
+import { Info } from "./components/Info";
 
+export const App: React.FC = () => {
   const [modalActiveInfo, setModalActiveInfo] = useState(false);
   const [modalActiveProduct, setModalActiveProduct] = useState(false);
   const [modalActiveStandart, setModalActiveStandart] = useState(false);
@@ -30,23 +32,22 @@ export const App: React.FC = () => {
 
   const isExist = () => {
     var existId = true;
-    dayList.map((day) => (day.dateId === activeDay && (existId = false)));
+    dayList.map((day) => day.dateId === activeDay && (existId = false));
     return existId;
   };
 
   const addNewDay = () => {
     if (isExist()) {
       addDay({
-          dateId: activeDay,
-          listOfProducts: [],
-          sums:
-          {
-            callories: 0,
-            proteins: 0,
-            fats: 0,
-            carbohydrates: 0
-          },
-        });
+        dateId: activeDay,
+        listOfProducts: [],
+        sums: {
+          callories: 0,
+          proteins: 0,
+          fats: 0,
+          carbohydrates: 0,
+        },
+      });
     }
   };
 
@@ -67,30 +68,17 @@ export const App: React.FC = () => {
       <Modal active={modalActiveStandart} setActive={setModalActiveStandart}>
         <ModalStandart setActive={setModalActiveStandart} info={info} />
       </Modal>
-      <button onClick={addNewDay}>ADD</button>
 
       <div className="main-block">
-        <div className="info-block">
-          <div className="info-block__data">
-            {info && (
-              <div>
-                Пол: {info?.sex}, Возраст: {info?.age}, вес: {info?.weight}, рост: {info?.height}
-              </div>
-            )}
-          </div>
-          <button
-            className="set-info__button"
-            onClick={() => setModalActiveInfo(true)}
-          >
-            Options
-          </button>
-          <button onClick={() => setModalActiveStandart(true)}>Rec</button>
-        </div>
+        <Info info={info} setModalActiveInfo={setModalActiveInfo} setModalActiveStandart={setModalActiveStandart} />
         <button
           className="add-product__button"
           onClick={() => setModalActiveProduct(true)}
         >
           Add product
+        </button>
+        <button className="update__button" onClick={addNewDay}>
+          <img src={update} alt="" />
         </button>
         <List products={products} activeDay={activeDay} dayList={dayList} />
       </div>

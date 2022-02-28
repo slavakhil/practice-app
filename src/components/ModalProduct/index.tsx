@@ -34,6 +34,7 @@ export const ModalProduct: React.FC<{
           <input type='text'
             {...register('name', {
               required: 'Поле обязательно к заполнению',
+              maxLength: 45,
               minLength: {
                 value: 3,
                 message: 'Минимум 3 символа'

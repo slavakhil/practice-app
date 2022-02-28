@@ -6,7 +6,7 @@ import localforage from "localforage";
 let now = new Date();
 
 export const getId = () => {
-  const getMonth = (now.getMonth() + 1 < 10) ? 0 + "" + now.getMonth() : now.getMonth();
+  const getMonth = (now.getMonth() + 1 < 10) ? 0 + "" + (now.getMonth() + 1) : now.getMonth() + 1;
   return parseInt(now.getDate() + "" + getMonth + now.getFullYear());
 }
 
@@ -93,7 +93,7 @@ export const $products = createStore<IProduct[]>([
 
 export const $store = createStore<IDay[]>([
   {
-    dateId: 19012022,
+    dateId: 19022022,
     sums: {
       callories: 64,
       proteins: 20,

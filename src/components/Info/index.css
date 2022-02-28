@@ -1,0 +1,16 @@
+.info-block__button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.info-block__recommendations {
+  border: none;
+  background-color: #ccc;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { IProduct } from "../../models/types";
 import { addProductToListDay } from "../../store/effector";
+import addIcon from "../../assets/add.svg"
 
 interface props {
   products: IProduct[];
@@ -11,7 +12,6 @@ interface props {
 export const Selection: React.FC<props> = ({ products, activeDay }) => {
   const {
     register,
-    formState: { isValid },
     handleSubmit,
   } = useForm({
     mode: "onBlur",
@@ -40,7 +40,9 @@ export const Selection: React.FC<props> = ({ products, activeDay }) => {
             ))}
         </select>
 
-        <input value="Add to list" type="submit" disabled={!isValid} />
+        <button className="add-product-to-list__button">
+          <img src={addIcon} alt="" />
+        </button>
       </form>
     </div>
   );
