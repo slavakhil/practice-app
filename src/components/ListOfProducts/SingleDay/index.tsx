@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IDay, IProduct } from "../../../models/types";
-import {SingleProductTitle} from "./SingleProductTitle"
-import { SingleProductList } from "./SingleProductList";
+import {SingleDayTitle} from "./SingleDayTitle"
+import { SingleDayList } from "./SingleDayList";
 import "./index.css"
 
 interface props {
@@ -10,7 +10,7 @@ interface props {
   products: IProduct[];
 }
 
-export const SingleProduct: React.FC<props> = ({
+export const SingleDay: React.FC<props> = ({
   day,
   activeDay,
   products,
@@ -26,8 +26,8 @@ export const SingleProduct: React.FC<props> = ({
 
   return (
     <div className="single-product">
-      <SingleProductTitle day={day} toggle={toggle} />
-      {isOpen && <SingleProductList activeDay={activeDay} listOfProducts={day.listOfProducts} products={products} isToday={isToday}/>}
+      <SingleDayTitle day={day} toggle={toggle} />
+      {isOpen && <SingleDayList activeDay={activeDay} listOfProducts={day.listOfProducts} products={products} isToday={isToday}/>}
     </div>
   );
 };

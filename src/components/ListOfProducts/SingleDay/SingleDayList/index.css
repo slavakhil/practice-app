@@ -1,0 +1,22 @@
+.single-product__element {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 15px;
+}
+
+.single-product__button{
+    border: none;
+    font-size: 15px;
+    background-color: #f18b6b;
+    transition: 0.3s;
+    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.single-product__button:hover{
+    background-color: #ec3a04;
+}

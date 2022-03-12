@@ -7,20 +7,22 @@ interface props {
   toggle: () => void
 }
 
-export const SingleProductTitle: React.FC<props> = ({
+export const SingleDayTitle: React.FC<props> = ({
   day,
   toggle
 }) => {
   const getTextDate = () => ({
-    day: Math.floor(day.dateId / 1000000),
-    month: Math.floor((day.dateId % 1000000) / 10000),
-    year: day.dateId % 10000,
+    day: day.dateId % 100,
+    month: Math.floor((day.dateId % 10000) / 100),
+    year: Math.floor(day.dateId / 10000),
   });
 
   return (
       <div>
         <div className="single-product__title" onClick={toggle}>
-          {getTextDate().day +
+          {(getTextDate().day < 10
+              ? "0" + getTextDate().day
+              : getTextDate().day) +
             "." +
             (getTextDate().month < 10
               ? "0" + getTextDate().month

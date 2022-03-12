@@ -1,10 +1,14 @@
-.modal-info {
+.modal-standart {
   height: 400px;
 }
 
-.modal-info input {
-  width: 325px;
-  height: 25px;
+.modal-standart__select {
+  margin-bottom: 20px;
+}
+
+.modal-standart__select select {
+  width: 333px;
+  height: 34px;
   margin-top: 5px;
   padding: 4px;
   border-radius: 4px;
@@ -18,38 +22,13 @@
   appearance: none;
 }
 
-.modal-info__input {
-  margin-bottom: 20px;
-}
-
-.modal-info__input select {
-  width: 333px;
-  height: 34px;
-  padding: 4px;
-  border-radius: 4px;
-  box-shadow: 2px 2px 8px #999;
-  background: #eee;
-  border: none;
-  outline: none;
-  display: inline-block;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.modal-info__input label {
+.modal-standart__select label {
   font-size: 14px;
   font-weight: 500;
   padding-left: 5px;
 }
 
-.modal-info__error {
-  font-size: 12px;
-  margin-top: 5px;
-  color: red;
-}
-
-.modal-info__button {
+.modal-standart__button{
   border: none;
   background-color: #f18b6b;
   color: white;
@@ -63,11 +42,23 @@
   margin-bottom: 5px;
 }
 
-.modal-info__button:hover{
+.modal-standart__button:hover{
   background-color: #ec3a04;
 }
 
-.modal-info__button:disabled{
+.modal-standart__button:disabled{
   color: black;
   background-color: #ccc;
+}
+
+.recommendations-block{
+    height: 400px;
+}
+
+.recommendations {
+    margin-top: 15px;
+}
+
+.recommendations__item{
+  padding-top: 5px;
 }

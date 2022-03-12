@@ -11,7 +11,7 @@ interface props {
   isToday: boolean;
 }
 
-export const SingleProductList: React.FC<props> = ({
+export const SingleDayList: React.FC<props> = ({
   listOfProducts,
   activeDay,
   products,
@@ -29,12 +29,14 @@ export const SingleProductList: React.FC<props> = ({
       ) : (
         listOfProducts.map((product) => (
           <div key={product.id} className="single-product__element">
+            <div>
             {isToday && (
-              <button onClick={() => deleteProductListDay({ id: product.id })}>
-                x
+              <button className="single-product__button" onClick={() => deleteProductListDay({ id: product.id })}>
+                ✖
               </button>
             )}
             {product.productInDayList.name + " "}
+            </div>
             <span className="single-product__info">
               ккал: {product.productInDayList.dataProduct.callories}, белки:{" "}
               {product.productInDayList.dataProduct.proteins}, жиры:{" "}

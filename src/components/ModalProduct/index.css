@@ -1,0 +1,58 @@
+.modal-product {
+    height: 620px;
+}
+
+.modal-product__input{
+    margin-bottom: 20px;
+}
+
+.modal-product__input input {
+    width: 325px;
+    height: 25px;
+    margin-top: 5px;
+    padding: 4px;
+    border-radius:4px;
+    box-shadow: 2px 2px 8px #999;
+    background: #eee;
+    border: none;
+    outline: none;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.modal-product__input label{
+    font-size: 14px;
+    font-weight: 500;
+    padding-left: 5px;
+}
+
+.modal-product__error {
+    margin-top: 5px;
+    font-size: 12px;
+    color: red;
+}
+
+.modal-product__button {
+    border: none;
+    background-color: #f18b6b;
+    color: white;
+    margin-top: 5px;
+    margin-left: 95px;
+    transition: 0.3s;
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+
+  .modal-product__button:hover{
+    background-color: #ec3a04;
+  }
+
+  .modal-product__button:disabled{
+    color: black;
+    background-color: #ccc;
+  }

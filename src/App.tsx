@@ -24,7 +24,8 @@ export const App: React.FC = () => {
   const [modalActiveInfo, setModalActiveInfo] = useState(false);
   const [modalActiveProduct, setModalActiveProduct] = useState(false);
   const [modalActiveStandart, setModalActiveStandart] = useState(false);
-  const [activeDay, setActiveDay] = useState(getId());
+
+  const activeDay = getId();
 
   const info = useStore($info);
   const products = useStore($products);
@@ -59,6 +60,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="container">
+      <h1>Дневник питания</h1>
       <Modal active={modalActiveInfo} setActive={setModalActiveInfo}>
         <ModalInfo setActive={setModalActiveInfo} />
       </Modal>
@@ -68,20 +70,18 @@ export const App: React.FC = () => {
       <Modal active={modalActiveStandart} setActive={setModalActiveStandart}>
         <ModalStandart setActive={setModalActiveStandart} info={info} />
       </Modal>
-
-      <div className="main-block">
-        <Info info={info} setModalActiveInfo={setModalActiveInfo} setModalActiveStandart={setModalActiveStandart} />
-        <button
-          className="add-product__button"
-          onClick={() => setModalActiveProduct(true)}
-        >
-          Add product
-        </button>
-        <button className="update__button" onClick={addNewDay}>
-          <img src={update} alt="" />
-        </button>
-        <List products={products} activeDay={activeDay} dayList={dayList} />
-      </div>
+      <Info
+        info={info}
+        setModalActiveInfo={setModalActiveInfo}
+        setModalActiveStandart={setModalActiveStandart}
+      />
+      <List
+        setModalActiveProduct={setModalActiveProduct}
+        addNewDay={addNewDay}
+        products={products}
+        activeDay={activeDay}
+        dayList={dayList}
+      />
     </div>
   );
 };

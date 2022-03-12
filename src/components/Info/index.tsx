@@ -18,26 +18,33 @@ export const Info: React.FC<props> = ({
     <div className="info-block">
       <div className="info-block__data">
         {info && (
-          <div>
-            <div>Пол: {info?.sex === "male" ? "Мужчина" : "Девушка"},</div>
-            <div>Возраст: {info?.age},</div>
-            <div>Вес: {info?.weight} кг,</div>
-            <div>Рост: {info?.height} см</div>
+          <div className="data">
+            <div className="data__item">
+              Пол: {info?.sex === "male" ? "мужчина" : "девушка"}, возраст:{" "}
+              {info?.age},
+            </div>
+            <div className="data__item"></div>
+            <div className="data__item">
+              вес: {info?.weight} кг, рост: {info?.height} см
+            </div>
+            <div className="data__item"></div>
           </div>
         )}
+        <div className="info-buttons">
+          <button
+            className="info-block__settings"
+            onClick={() => setModalActiveInfo(true)}
+          >
+            Настройки
+          </button>
+          <button
+            className="info-block__recommendations"
+            onClick={() => setModalActiveStandart(true)}
+          >
+            Рекомендации
+          </button>
+        </div>
       </div>
-      <button
-        className="info-block__button"
-        onClick={() => setModalActiveInfo(true)}
-      >
-        <img src={settings} alt="" />
-      </button>
-      <button
-        className="info-block__recommendations"
-        onClick={() => setModalActiveStandart(true)}
-      >
-        Rec
-      </button>
     </div>
   );
 };

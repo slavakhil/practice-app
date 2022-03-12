@@ -6,8 +6,11 @@ import localforage from "localforage";
 let now = new Date();
 
 export const getId = () => {
+  const getDay = (now.getDate() < 10) ? 0 + "" + (now.getDate()) : now.getDate();
   const getMonth = (now.getMonth() + 1 < 10) ? 0 + "" + (now.getMonth() + 1) : now.getMonth() + 1;
-  return parseInt(now.getDate() + "" + getMonth + now.getFullYear());
+  console.log(getDay);
+  console.log(getDay + "" + getMonth + now.getFullYear())
+  return parseInt(now.getFullYear() + "" + getMonth + getDay);
 }
 
 // events
@@ -93,7 +96,7 @@ export const $products = createStore<IProduct[]>([
 
 export const $store = createStore<IDay[]>([
   {
-    dateId: 19022022,
+    dateId: 20220219,
     sums: {
       callories: 64,
       proteins: 20,

@@ -1,100 +1,154 @@
-import React from 'react';
-import { useForm } from 'react-hook-form'
-import { IProduct } from '../../models/types';
-import './ModalProduct.css'
+import React from "react";
+import { useForm } from "react-hook-form";
+import { IProduct } from "../../models/types";
+import "./index.css";
 import { addProduct } from "../../store/effector";
 
-
-export const ModalProduct: React.FC<{ 
-  setActive: React.Dispatch<React.SetStateAction<boolean>>
- }> = ({ setActive }) => {
+export const ModalProduct: React.FC<{
+  setActive: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setActive }) => {
   const {
     register,
     formState: { errors, isValid },
-    handleSubmit
+    handleSubmit,
   } = useForm<IProduct>({
-    mode: "onBlur"
+    mode: "onBlur",
   });
 
   const onSubmit = handleSubmit(({ name, weight, dataProduct }) => {
     addProduct({
       name,
       weight,
-      dataProduct
-    })
+      dataProduct,
+    });
     setActive(false);
-  })
+  });
 
   return (
     <div>
-      <h1>Adding product</h1>
-      <form onSubmit={onSubmit}>
-        <label>
-          Product's name
-          <input type='text'
-            {...register('name', {
-              required: 'Поле обязательно к заполнению',
-              maxLength: 45,
-              minLength: {
-                value: 3,
-                message: 'Минимум 3 символа'
-              }
-            })}
-          />
-        </label>
-        <div>{errors?.name && errors?.name?.message}</div>
-        <label>
-          Weight
-          <input type='number'
-            {...register('weight', {
-              required: 'Поле обязательно к заполнению',
-              min: 0
-            })}
-          />
-        </label>
-        <div>{errors?.weight && errors?.weight.message}</div>
-        <label>
-          Callories
-          <input type='number'
-            {...register('dataProduct.callories', {
-              required: 'Поле обязательно к заполнению',
-              min: 0
-            })}
-          />
-        </label>
-        <div>{errors?.dataProduct?.callories && errors?.dataProduct.callories.message}</div>
-        <label>
-          Proteins
-          <input type='number' step='0.1'
-            {...register('dataProduct.proteins', {
-              required: 'Поле обязательно к заполнению',
-              min: 0
-            })}
-          />
-        </label>
-        <div>{errors?.dataProduct?.proteins && errors?.dataProduct.proteins.message}</div>
-        <label>
-          Fats
-          <input type='number' step='0.1'
-            {...register('dataProduct.fats', {
-              required: 'Поле обязательно к заполнению',
-              min: 0
-            })}
-          />
-        </label>
-        <div>{errors?.dataProduct?.fats && errors?.dataProduct.fats.message}</div>
-        <label>
-          Carbohydrates
-          <input type='number' step='0.1'
-            {...register('dataProduct.carbohydrates', {
-              required: 'Поле обязательно к заполнению',
-              min: 0
-            })}
-          />
-        </label>
-        <div>{errors?.dataProduct?.carbohydrates && errors?.dataProduct.carbohydrates.message}</div>
-        <input value="Добавить" type="submit" disabled={!isValid} />
+      <h1>Добавление продукта</h1>
+      <form className="modal-product" onSubmit={onSubmit}>
+        <div>
+          <div className="modal-product__input">
+            <label>Название продукта</label>
+            <div>
+              <input
+                placeholder="Введите название продукта"
+                type="text"
+                {...register("name", {
+                  required: "Поле обязательно к заполнению",
+                  maxLength: {
+                    value: 35,
+                    message: "Максимум 35 символов",
+                  },
+                  minLength: {
+                    value: 3,
+                    message: "Минимум 3 символа",
+                  },
+                })}
+              />
+              <div className="modal-product__error">
+                {errors?.name && errors?.name?.message}
+              </div>
+            </div>
+          </div>
+
+          <div className="modal-product__input">
+            <label>Вес, граммы</label>
+            <div>
+              <input
+                placeholder="Введите вес"
+                type="number"
+                {...register("weight", {
+                  required: "Поле обязательно к заполнению",
+                  min: 0,
+                })}
+              />
+            </div>
+            <div className="modal-product__error">
+              {errors?.weight && errors?.weight.message}
+            </div>
+          </div>
+
+          <div className="modal-product__input">
+            <label>Каллории</label>
+            <div>
+              <input
+                placeholder="Введите количество каллорий"
+                type="number"
+                {...register("dataProduct.callories", {
+                  required: "Поле обязательно к заполнению",
+                  min: 0,
+                })}
+              />
+            </div>
+            <div className="modal-product__error">
+              {errors?.dataProduct?.callories &&
+                errors?.dataProduct.callories.message}
+            </div>
+          </div>
+
+          <div className="modal-product__input">
+            <label>Белки</label>
+            <div>
+              <input
+                placeholder="Введите количество белков"
+                type="number"
+                step="0.1"
+                {...register("dataProduct.proteins", {
+                  required: "Поле обязательно к заполнению",
+                  min: 0,
+                })}
+              />
+            </div>
+            <div className="modal-product__error">
+              {errors?.dataProduct?.proteins &&
+                errors?.dataProduct.proteins.message}
+            </div>
+          </div>
+
+          <div className="modal-product__input">
+            <label>Жиры</label>
+            <div>
+              <input
+                placeholder="Введите количество жиров"
+                type="number"
+                step="0.1"
+                {...register("dataProduct.fats", {
+                  required: "Поле обязательно к заполнению",
+                  min: 0,
+                })}
+              />
+            </div>
+
+            {errors?.dataProduct?.fats && (
+              <div className="modal-product__error">
+                {errors?.dataProduct.fats.message}
+              </div>
+            )}
+          </div>
+
+          <div className="modal-product__input">
+            <label>Углеводы</label>
+            <div>
+              <input
+                placeholder="Введите количество углеводов"
+                type="number"
+                step="0.1"
+                {...register("dataProduct.carbohydrates", {
+                  required: "Поле обязательно к заполнению",
+                  min: 0,
+                })}
+              />
+            </div>
+            <div className="modal-product__error">
+              {errors?.dataProduct?.carbohydrates &&
+                errors?.dataProduct.carbohydrates.message}
+            </div>
+          </div>
+        </div>
+        <button className="modal-product__button" disabled={!isValid}>Добавить</button>
       </form>
     </div>
-  )
-}
+  );
+};

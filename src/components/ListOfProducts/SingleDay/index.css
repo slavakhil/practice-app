@@ -1,7 +1,7 @@
 .single-product {
     background-color: aliceblue;
-    border: 1px solid #000;
+    border: 1px solid #a6a6a6;
     margin-top: 5px;
-    padding: 5px;
+    padding: 10px 5px 3px 5px;
     border-radius: 5px;
 }
