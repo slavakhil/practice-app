@@ -54,7 +54,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     getInfo();
-    getProducts();
+    //getProducts();
     getDayListOfProducts();
   }, []);
 
